@@ -4,11 +4,7 @@ describe('cy.tat("anchors")', () => {
   it('"Click me" anchor triggers a POST request on click', () => {
     cy.intercept('POST', 'https://api.example.com', { body: 'Yo!' }).as('postReq')
     cy.contains('a', 'Click me').click().blur()
-    cy.wait('@postReq').then(request => {
-      const { response } = request
-      const { body } = response
-      expect(body).to.equal('Yo!')
-    })
+    cy.wait('@postReq').its('response.body').should('be.equal', 'Yo!')
   })
 
   it('"Download" anchor downloads a file on click', () => {
